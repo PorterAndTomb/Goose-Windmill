@@ -7,7 +7,8 @@ angular.module('hack', [
   'hack.followService',
   'hack.tabs',
   'hack.auth',
-  'ngRoute'
+  'ngRoute',
+  'angular-inview'
 ])
 
 .config(function($routeProvider, $httpProvider) {

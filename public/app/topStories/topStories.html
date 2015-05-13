@@ -3,6 +3,6 @@
     <div ng-include="'app/partials/story.html'" class="story-holder"></div>
   </div>
 
-  <div class="more-button" ng-show="index < stories.length && stories.length > 0" ng-click="index = index + perPage;">more</div>
+  <div class="more-button" ng-show="index < stories.length && stories.length > 0" in-view="$inview && (index = index + perPage);" in-view-options="{debounce: 100}">more</div>
 </div>
 
