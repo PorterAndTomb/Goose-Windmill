@@ -138,21 +138,26 @@ angular.module('hack.linkService', [])
 .factory('Links', ["$http", "$interval", "Followers", function($http, $interval, Followers) {
   var personalStories = [];
   var topStories = [];
+  var askStories = [];
+  var showStories = [];
 
-  var getTopStories = function() {
-    var url = '/api/cache/topStories'
+  topStories.url = '/api/cache/topStories';
+  askStories.url = '/api/cache/askStories';
+  showStories.url = '/api/cache/showStories';
+
+  var getStories = function(cache) {
 
     return $http({
       method: 'GET',
-      url: url
+      url: cache.url
     })
     .then(function(resp) {
 
-      // Very important to not point topStories to a new array.
+      // Very important to not point cache to a new array.
       // Instead, clear out the array, then push all the new
       // datum in place. There are pointers pointing to this array.
-      topStories.splice(0, topStories.length);
-      topStories.push.apply(topStories, resp.data);
+      cache.splice(0, cache.length);
+      cache.push.apply(cache, resp.data);
     });
   };
 
@@ -195,20 +200,29 @@ angular.module('hack.linkService', [])
 
   var init = function(){
     getPersonalStories(Followers.following);
+    getStories(topStories);
+    getStories(askStories);
+    getStories(showStories);
 
     $interval(function(){
       getPersonalStories(Followers.following);
-      getTopStories();
+      getStories(topStories);
+      getStories(askStories);
+      getStories(showStories);
     }, 300000);
   };
 
   init();
 
   return {
-    getTopStories: getTopStories,
+    getTopStories: getStories.bind(null, topStories),
+    getAskStories: getStories.bind(null, askStories),
+    getShowStories: getStories.bind(null, showStories),
     getPersonalStories: getPersonalStories,
     personalStories: personalStories,
-    topStories: topStories
+    topStories: topStories,
+    askStories: askStories,
+    showStories: showStories
   };
 }]);
 
@@ -303,7 +317,7 @@ angular.module('hack.tabs', [])
   hash = !hash ? 'all' : hash;
   $scope.currentTab = hash;
 
-  // What is angle? Don't worry. This just makes the 
+  // What is angle? Don't worry. This just makes the
   // refresh button do a cool spin animation. We splurged.
   $scope.angle = 360;
 
@@ -314,6 +328,8 @@ angular.module('hack.tabs', [])
   $scope.refreshs = function(){
     console.log('hereeeee');
     Links.getTopStories();
+    Links.askStories();
+    Links.showStories();
     Links.getPersonalStories(Followers.following);
     $scope.angle += 360;
   };
@@ -341,8 +357,52 @@ angular.module('hack.topStories', [])
 }]);
 
 
+angular.module('hack.askStories', [])
+
+.controller('AskController', ["$scope", "$window", "Links", "Followers", function ($scope, $window, Links, Followers) {
+  angular.extend($scope, Links);
+  $scope.stories = Links.askStories;
+  $scope.perPage = 30;
+  $scope.index = $scope.perPage;
+
+  $scope.currentlyFollowing = Followers.following;
+
+  $scope.getData = function() {
+    Links.getAskStories();
+  };
+
+  $scope.addUser = function(username) {
+    Followers.addFollower(username);
+  };
+
+  $scope.getData();
+}]);
+
+angular.module('hack.showStories', [])
+
+.controller('ShowController', ["$scope", "$window", "Links", "Followers", function ($scope, $window, Links, Followers) {
+  angular.extend($scope, Links);
+  $scope.stories = Links.showStories;
+  $scope.perPage = 30;
+  $scope.index = $scope.perPage;
+
+  $scope.currentlyFollowing = Followers.following;
+
+  $scope.getData = function() {
+    Links.getShowStories();
+  };
+
+  $scope.addUser = function(username) {
+    Followers.addFollower(username);
+  };
+
+  $scope.getData();
+}]);
+
 angular.module('hack', [
   'hack.topStories',
+  'hack.askStories',
+  'hack.showStories',
   'hack.personal',
   'hack.currentlyFollowing',
   'hack.linkService',
@@ -350,7 +410,8 @@ angular.module('hack', [
   'hack.followService',
   'hack.tabs',
   'hack.auth',
-  'ngRoute'
+  'ngRoute',
+  'angular-inview'
 ])
 
 .config(["$routeProvider", "$httpProvider", function($routeProvider, $httpProvider) {
@@ -363,6 +424,14 @@ angular.module('hack', [
       templateUrl: 'app/personal/personal.html',
       controller: 'PersonalController'
     })
+    .when('/ask', {
+      templateUrl: 'app/ask/ask.html',
+      controller: 'AskController'
+    })
+    .when('/show', {
+      templateUrl: 'app/show/show.html',
+      controller: 'ShowController'
+    })
     .otherwise({
       redirectTo: '/'
     });
@@ -374,10 +443,10 @@ angular.module('hack', [
   }
 })
 
-.filter('htmlsafe', ['$sce', function ($sce) { 
+.filter('htmlsafe', ['$sce', function ($sce) {
   return function (text) {
     return $sce.trustAsHtml(text);
-  };    
+  };
 }])
 
 .directive('rotate', function () {
