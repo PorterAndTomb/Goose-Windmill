@@ -113,6 +113,7 @@ module.exports = function(grunt) {
     },
 
     karma: {
+
       options: {
         // point all tasks to karma config file
         configFile: 'karma.conf.js'
@@ -124,6 +125,7 @@ module.exports = function(grunt) {
       continuous: {
         // keep karma running in the background
         background: true
+
       }
     }
 
@@ -194,4 +196,8 @@ module.exports = function(grunt) {
 
   
 };
+
+
+
+
 

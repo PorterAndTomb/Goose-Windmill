@@ -4,7 +4,7 @@
   "description": "Hacker News follower functionality",
   "main": "index.js",
   "scripts": {
-    "test": "karma start --browsers PhantomJS"
+    "test": "grunt test"
   },
   "repository": {
     "type": "git",
