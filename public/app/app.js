@@ -1,5 +1,7 @@
 angular.module('hack', [
   'hack.topStories',
+  'hack.askStories',
+  'hack.showStories',
   'hack.personal',
   'hack.currentlyFollowing',
   'hack.linkService',
@@ -20,6 +22,14 @@ angular.module('hack', [
       templateUrl: 'app/personal/personal.html',
       controller: 'PersonalController'
     })
+    .when('/ask', {
+      templateUrl: 'app/ask/ask.html',
+      controller: 'AskController'
+    })
+    .when('/show', {
+      templateUrl: 'app/show/show.html',
+      controller: 'ShowController'
+    })
     .otherwise({
       redirectTo: '/'
     });
@@ -31,10 +41,10 @@ angular.module('hack', [
   }
 })
 
-.filter('htmlsafe', ['$sce', function ($sce) { 
+.filter('htmlsafe', ['$sce', function ($sce) {
   return function (text) {
     return $sce.trustAsHtml(text);
-  };    
+  };
 }])
 
 .directive('rotate', function () {
