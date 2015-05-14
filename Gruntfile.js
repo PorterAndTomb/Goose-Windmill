@@ -191,8 +191,10 @@ module.exports = function(grunt) {
    ]);
 
 
+
    //test with karma
    grunt.registerTask('test', ['karma:single']);
+
 
   
 };
