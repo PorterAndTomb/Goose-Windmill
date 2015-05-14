@@ -2,37 +2,35 @@ var request = require('request');
 
 //In server memory of Hacker News current top stories
 var topStories = [];
+var showStories = [];
+var askStories = [];
 
-//Set headers
-var headers = {
-  'User-Agent': 'Hacker Feed',
-  'Conontent-Type': 'application/json'  
-};
+//Names of the caches for error messages
+topStories.name = "Top Stories";
+showStories.name = "Show HN Stories";
+askStories.name = "Ask HN Stories";
 
-module.exports = {
-  //Access function for model data
-  getTopStories: function(callback) {
-    if (topStories.length) {
-      callback(null,topStories);
+//Urls to get story orders
+topStories.url = "https://hacker-news.firebaseio.com/v0/topstories.json";
+showStories.url = "https://hacker-news.firebaseio.com/v0/showstories.json";
+askStories.url = " https://hacker-news.firebaseio.com/v0/askstories.json";
+
+var getStories = function (cache, callback) {
+    if (cache.length) {
+      callback(null,cache);
     } else {
-      callback(new Error('Top Stories not cached!'));
+      callback(new Error(cache.name + ' not found!'));
     }
-  },
+}
 
-  // The top news stories data is retrieved from the Algolia API, however it does not include
-  // Hacker News' ranking algorithm. The data retrieved from Algolia is sorted according to the
-  // ranking on the firebase API
-
-  updateTopStories: function() {
-    var storyOrderUrl = 'https://hacker-news.firebaseio.com/v0/topstories.json';
-
+var updateStories = function (cache) {
     // Configure API request
     var options = {
-      url: storyOrderUrl,
+      url: cache.url,
       method: 'GET',
       headers: headers
     };
-    
+
     // Perform the firebase API request
     request(options, function(error, response, html){
       var data = JSON.parse(response.body);
@@ -57,19 +55,39 @@ module.exports = {
         });
 
         // Clear out previous top stories
-        topStories.length = 0;
-        
+        cache.length = 0;
+
         //storyOrder matches hacker news front page. Find data related to the story ID
         //in the incoming response data
         for(var i = 0; i < storyOrder.length; i++) {
           index = indexMap.indexOf(String(storyOrder[i]));
           var item = data.hits[index];
           if(item){
-            topStories.push(data.hits[index]);
+            cache.push(data.hits[index]);
           }
         }
-        console.log("Top Stories Updated");
+        console.log(cache.name + " Updated");
       });
     });
-  }
+};
+
+//Set headers
+var headers = {
+  'User-Agent': 'Hacker Feed',
+  'Content-Type': 'application/json'
+};
+
+module.exports = {
+  //Access function for model data
+  getTopStories: getStories.bind(null, topStories),
+  getShowStories: getStories.bind(null, showStories),
+  getAskStories: getStories.bind(null, askStories),
+
+  // The top news stories data is retrieved from the Algolia API, however it does not include
+  // Hacker News' ranking algorithm. The data retrieved from Algolia is sorted according to the
+  // ranking on the firebase API
+
+  updateTopStories: updateStories.bind(null, topStories),
+  updateShowStories: updateStories.bind(null, showStories),
+  updateAskStories: updateStories.bind(null, askStories)
 };

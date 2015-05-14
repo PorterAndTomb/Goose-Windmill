@@ -7,7 +7,7 @@ angular.module('hack.tabs', [])
   hash = !hash ? 'all' : hash;
   $scope.currentTab = hash;
 
-  // What is angle? Don't worry. This just makes the 
+  // What is angle? Don't worry. This just makes the
   // refresh button do a cool spin animation. We splurged.
   $scope.angle = 360;
 
@@ -18,6 +18,8 @@ angular.module('hack.tabs', [])
   $scope.refreshs = function(){
     console.log('hereeeee');
     Links.getTopStories();
+    Links.askStories();
+    Links.showStories();
     Links.getPersonalStories(Followers.following);
     $scope.angle += 360;
   };
