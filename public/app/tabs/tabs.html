@@ -5,6 +5,21 @@
       <div class="refresh" degrees="angle" rotate ng-click="refreshs()"></div>
     </div>
   </a>
+
+  <a ng-class="currentTab === 'ask' ? 'tab': 'tab faded'" href="#/ask" ng-click="changeTab('ask')">
+    Ask HN
+    <div class="active" ng-show="currentTab === 'ask'">
+      <div class="refresh" degrees="angle" rotate ng-click="refreshs()"></div>
+    </div>
+  </a>
+
+  <a ng-class="currentTab === 'show' ? 'tab': 'tab faded'" href="#/show" ng-click="changeTab('show')">
+    Show HN
+    <div class="active" ng-show="currentTab === 'show'">
+      <div class="refresh" degrees="angle" rotate ng-click="refreshs()"></div>
+    </div>
+  </a>
+
   <a ng-class="currentTab === 'personal' ? 'tab': 'tab faded'" href="#/personal" ng-click="changeTab('personal')">
     Personal
     <div class="active" ng-show="currentTab === 'personal'">
