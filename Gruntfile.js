@@ -81,7 +81,7 @@ module.exports = function(grunt) {
       css: {
         files: 'public/**/*.css',
         tasks: ['cssmin']
-      }
+      },
     },
 
     shell: {
@@ -108,6 +108,18 @@ module.exports = function(grunt) {
       all: {
         path: 'http://localhost:3000/#/'
       }
+    },
+
+    karma: {
+      unit: {
+          configFile: 'karma.conf.js',
+          background: true
+        },
+      travis: {
+          configFile: 'karma.conf.js',
+          singleRun: true,
+          browsers: ['PhantomJS']
+      }
     }
 
 
@@ -125,6 +137,7 @@ module.exports = function(grunt) {
    grunt.loadNpmTasks('grunt-run');
    grunt.loadNpmTasks('grunt-services');
    grunt.loadNpmTasks('grunt-open');
+   grunt.loadNpmTasks('grunt-karma');
 
    //To run this function, call the task gitFunctions and pass in the name of the branch that 
    // will be pushed up to github
@@ -169,5 +182,11 @@ module.exports = function(grunt) {
      'uglify',
      'cssmin'
    ]);
+
+   //test with karma
+   grunt.registerTask('devmode', ['karma:unit']);
+
+   // Add a new task for travis
+   grunt.registerTask('test', ['karma:travis'])
   
 };
