@@ -3,21 +3,26 @@ angular.module('hack.linkService', [])
 .factory('Links', function($http, $interval, Followers) {
   var personalStories = [];
   var topStories = [];
+  var askStories = [];
+  var showStories = [];
 
-  var getTopStories = function() {
-    var url = '/api/cache/topStories'
+  topStories.url = '/api/cache/topStories';
+  askStories.url = '/api/cache/askStories';
+  showStories.url = '/api/cache/showStories';
+
+  var getStories = function(cache) {
 
     return $http({
       method: 'GET',
-      url: url
+      url: cache.url
     })
     .then(function(resp) {
 
-      // Very important to not point topStories to a new array.
+      // Very important to not point cache to a new array.
       // Instead, clear out the array, then push all the new
       // datum in place. There are pointers pointing to this array.
-      topStories.splice(0, topStories.length);
-      topStories.push.apply(topStories, resp.data);
+      cache.splice(0, cache.length);
+      cache.push.apply(cache, resp.data);
     });
   };
 
@@ -60,20 +65,29 @@ angular.module('hack.linkService', [])
 
   var init = function(){
     getPersonalStories(Followers.following);
+    getStories(topStories);
+    getStories(askStories);
+    getStories(showStories);
 
     $interval(function(){
       getPersonalStories(Followers.following);
-      getTopStories();
+      getStories(topStories);
+      getStories(askStories);
+      getStories(showStories);
     }, 300000);
   };
 
   init();
 
   return {
-    getTopStories: getTopStories,
+    getTopStories: getStories.bind(null, topStories),
+    getAskStories: getStories.bind(null, askStories),
+    getShowStories: getStories.bind(null, showStories),
     getPersonalStories: getPersonalStories,
     personalStories: personalStories,
-    topStories: topStories
+    topStories: topStories,
+    askStories: askStories,
+    showStories: showStories
   };
 });
 
