@@ -184,9 +184,7 @@ module.exports = function(grunt) {
    ]);
 
    //test with karma
-   grunt.registerTask('devmode', ['karma:unit']);
+   grunt.registerTask('test', ['karma:unit']);
 
-   // Add a new task for travis
-   grunt.registerTask('test', ['karma:travis'])
   
 };
