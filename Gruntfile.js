@@ -5,13 +5,15 @@ module.exports = function(grunt) {
      concat: {
       dist: {
         files: {
-          'public/dist/production.js': 
+          'public/dist/production.js':
              ['public/app/services/**.js',
               'public/app/auth/auth.js',
               'public/app/currentlyFollowing/currentlyFollowing.js',
               'public/app/personal/personal.js',
               'public/app/tabs/tabs.js',
               'public/app/topStories/topStories.js',
+              'public/app/ask/ask.js',
+              'public/app/show/show.js',
               'public/app/app.js'],
           'public/dist/production.css': ['public/styles/*.css']
        },
@@ -40,7 +42,7 @@ module.exports = function(grunt) {
 
     jshint: {
       files: [
-         'public/app/**/*.js', 'server/**/*.js', 
+         'public/app/**/*.js', 'server/**/*.js',
       ],
       options: {
         force: 'false',
@@ -52,16 +54,16 @@ module.exports = function(grunt) {
       }
     },
 
-    // this task needs to be run after concat (and before uglify) is called on any angular files, 
+    // this task needs to be run after concat (and before uglify) is called on any angular files,
     ngAnnotate: {
         options: {
-            add:true, 
+            add:true,
         },
         dist: {
           files: {
-                'public/dist/production.js': ['public/dist/production.js'],    
+                'public/dist/production.js': ['public/dist/production.js'],
             }
-        },    
+        },
     },
 
     watch: {
@@ -92,7 +94,7 @@ module.exports = function(grunt) {
         command: 'mongod',
         options: {
             async: true
-         } 
+         }
         },
       newTab:{
         command: 'osascript -e \'tell application \"Terminal\" to activate\' -e \'tell application \"System Events\" to tell process \"Terminal\" to keystroke \"t\" using command down\''
@@ -126,7 +128,7 @@ module.exports = function(grunt) {
    grunt.loadNpmTasks('grunt-services');
    grunt.loadNpmTasks('grunt-open');
 
-   //To run this function, call the task gitFunctions and pass in the name of the branch that 
+   //To run this function, call the task gitFunctions and pass in the name of the branch that
    // will be pushed up to github
    //For example, grunt gitFunctions:newFeatureBranch
    //if no branch name is passed in, nothing happens
@@ -150,7 +152,7 @@ module.exports = function(grunt) {
     nodemon.stdout.pipe(process.stdout);
     nodemon.stderr.pipe(process.stderr);
 
-    // here you can run other tasks e.g. 
+    // here you can run other tasks e.g.
      grunt.task.run([ 'watch' ]);
 
     });
@@ -169,5 +171,5 @@ module.exports = function(grunt) {
      'uglify',
      'cssmin'
    ]);
-  
+
 };
