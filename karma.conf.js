@@ -75,15 +75,21 @@ module.exports = function(config) {
     singleRun: true,
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> added inview dependency to karma
     // plugins : [
     //     'karma-phantomjs-launcher',
     //     'karma-jasmine'
     //     ],
+<<<<<<< HEAD
 =======
     plugins : [
         'karma-phantomjs-launcher',
         'karma-jasmine'
         ],
 >>>>>>> re-wired test to grunt
+=======
+>>>>>>> added inview dependency to karma
   });
 };
