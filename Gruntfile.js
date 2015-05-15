@@ -111,14 +111,17 @@ module.exports = function(grunt) {
     },
 
     karma: {
-      unit: {
-          configFile: 'karma.conf.js',
-          background: true
-        },
-      travis: {
-          configFile: 'karma.conf.js',
-          singleRun: true,
-          browsers: ['PhantomJS']
+      options: {
+        // point all tasks to karma config file
+        configFile: 'karma.conf.js'
+      },
+      single: {
+        // run tests once instead of continuously
+        singleRun: true
+      },
+      continuous: {
+        // keep karma running in the background
+        background: true
       }
     }
 
@@ -184,7 +187,7 @@ module.exports = function(grunt) {
    ]);
 
    //test with karma
-   grunt.registerTask('test', ['karma:unit']);
+   grunt.registerTask('test', ['karma:single']);
 
   
 };

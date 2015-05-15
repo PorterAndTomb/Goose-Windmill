@@ -19,6 +19,7 @@ module.exports = function(config) {
       'public/lib/angular.js',
       'public/lib/angular-route.min.js',
       'public/lib/angular-mocks.js',
+      'public/lib/angular-inview.js',
 
       // our app code
       'public/app/**/*.js',
@@ -73,9 +74,9 @@ module.exports = function(config) {
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: true,
 
-    plugins : [
-        'karma-phantomjs-launcher',
-        'karma-jasmine'
-        ],
+    // plugins : [
+    //     'karma-phantomjs-launcher',
+    //     'karma-jasmine'
+    //     ],
   });
 };

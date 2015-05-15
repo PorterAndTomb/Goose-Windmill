@@ -5,7 +5,6 @@ describe('AuthController', function () {
   // to retrieve our dependencies
   beforeEach(module('hack'));
   beforeEach(inject(function($injector) {
-  console.log('test travis within local repo');
 
       // mock out our dependencies
       $rootScope = $injector.get('$rootScope');
