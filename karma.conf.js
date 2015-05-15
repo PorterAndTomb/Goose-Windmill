@@ -74,22 +74,11 @@ module.exports = function(config) {
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: true,
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> added inview dependency to karma
     // plugins : [
     //     'karma-phantomjs-launcher',
     //     'karma-jasmine'
     //     ],
-<<<<<<< HEAD
-=======
-    plugins : [
-        'karma-phantomjs-launcher',
-        'karma-jasmine'
-        ],
->>>>>>> re-wired test to grunt
-=======
->>>>>>> added inview dependency to karma
+
+
   });
 };
