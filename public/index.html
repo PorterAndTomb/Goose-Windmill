@@ -20,12 +20,22 @@
       <div ng-view></div>
     </div>
 
+    <!-- color theme dropdown -->
+    <select id="colorTheme">
+      <option selected="selected">Color Scheme</option>
+      <option value="default">Default</option>
+      <option value="nightMode">Night Mode</option>
+      <option value="hackerMode">Hacker Mode</option>
+    </select>
+
+    <script src='lib/jquery-1.11.3.js'></script>
     <script src="lib/angular.js"></script>
     <script src="lib/angular-route.min.js"></script>
     <script src="lib/angular-mocks.js"></script>
     <script src="angular-inview/angular-inview.js"></script>
     <script src="lib/human-time.js"></script>
     <script src="dist/production.min.js"></script>
+    <script src='colorTheme.js'></script>
 
   </body>
 </html>
